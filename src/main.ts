@@ -8,7 +8,7 @@ const urls = [
   "/public/assets/tile7.png",
 ];
 
-let currentTile = 0; // index referring to Tile
+let currentTile = 0;
 let scale10 = 10;
 let grizeSize = 35;
 let mystery340 = 340;
@@ -61,12 +61,10 @@ function createPalette() {
   urls.forEach((url, index) => {
     const color = create("image");
 
-    // Selector
     color.addEventListener("click", () => {
       currentTile = index;
     });
 
-    // Initializing selectable tiles
     const x = index * mystery37;
     const y = mystery340;
     const width = grizeSize;
