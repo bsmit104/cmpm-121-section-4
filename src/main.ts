@@ -9,12 +9,16 @@ const urls = [
 ];
 
 let currentTile = 0; // index referring to Tile
+let scale10 = 10;
+let grizeSize = 35;
+let mystery340 = 340;
+let mystery37 = 37;
 
 const svg: HTMLElement = create("svg");
 const svgContainer: HTMLElement | null =
   document.getElementById("svgContainer");
 
-if (svgContainer != null) {
+if (svgContainer) {
   svg.setAttribute("width", "320");
   svg.setAttribute("height", "400");
   svgContainer.appendChild(svg);
@@ -28,58 +32,53 @@ function create(elementNone: any) {
 }
 
 function createGrid(width: number, height: number) {
-  for (let i = 0; i < width; i++) {
-    for (let j = 0; j < height; j++) {
-      const tile = create("image");
+  for (let i = 0; i < width * height; i++) {
+    const tile = create("image");
+    const x = (i % width) * scale10;
+    const y = Math.floor(i / width) * scale10;
 
-      // updating grid
-      tile.addEventListener("click", function (this: any) {
-        tile.setAttributeNS(null, "x", this.getAttribute("x"));
-        tile.setAttributeNS(null, "y", this.getAttribute("y"));
-        tile.setAttributeNS(null, "width", this.getAttribute("width"));
-        tile.setAttributeNS(null, "height", this.getAttribute("height"));
-        tile.setAttributeNS(null, "visibility", "visible");
-        tile.setAttributeNS(
-          "http://www.w3.org/1999/xlink",
-          "href",
-          urls[currentTile]
-        );
-      });
-
-      // initializing grid
-      tile.setAttributeNS(null, "x", i * 10);
-      tile.setAttributeNS(null, "y", j * 10);
-      tile.setAttributeNS(null, "width", 10);
-      tile.setAttributeNS(null, "height", 10);
+    tile.addEventListener("click", function () {
+      tile.setAttributeNS(null, "x", x);
+      tile.setAttributeNS(null, "y", y);
+      tile.setAttributeNS(null, "width", scale10);
+      tile.setAttributeNS(null, "height", scale10);
       tile.setAttributeNS(null, "visibility", "visible");
-      tile.setAttributeNS(
-        "http://www.w3.org/1999/xlink",
-        "href",
-        urls[currentTile]
-      );
+      tile.setAttributeNS("http://www.w3.org/1999/xlink", "href", urls[currentTile]);
+    });
 
-      svg.append(tile);
-    }
+    tile.setAttributeNS(null, "x", x);
+    tile.setAttributeNS(null, "y", y);
+    tile.setAttributeNS(null, "width", scale10);
+    tile.setAttributeNS(null, "height", scale10);
+    tile.setAttributeNS(null, "visibility", "visible");
+    tile.setAttributeNS("http://www.w3.org/1999/xlink", "href", urls[currentTile]);
+
+    svg.append(tile);
   }
 }
 
 function createPalette() {
-  for (let k = 0; k < urls.length; k++) {
+  urls.forEach((url, index) => {
     const color = create("image");
 
-    // selector
-    color.addEventListener("click", function () {
-      currentTile = k;
+    // Selector
+    color.addEventListener("click", () => {
+      currentTile = index;
     });
 
-    // initializing selectable tiles
-    color.setAttributeNS(null, "x", k * 37);
-    color.setAttributeNS(null, "y", 320 + 20);
-    color.setAttributeNS(null, "width", 35);
-    color.setAttributeNS(null, "height", 35);
+    // Initializing selectable tiles
+    const x = index * mystery37;
+    const y = mystery340;
+    const width = grizeSize;
+    const height = grizeSize;
+
+    color.setAttributeNS(null, "x", x);
+    color.setAttributeNS(null, "y", y);
+    color.setAttributeNS(null, "width", width);
+    color.setAttributeNS(null, "height", height);
     color.setAttributeNS(null, "visibility", "visible");
-    color.setAttributeNS("http://www.w3.org/1999/xlink", "href", urls[k]);
+    color.setAttributeNS("http://www.w3.org/1999/xlink", "href", url);
 
     svg.append(color);
-  }
+  });
 }
